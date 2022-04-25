@@ -1,25 +1,53 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import Keypad from './Keypad';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  state = {
+    total:"",
+    input:"",
+    isClicked:false
+  }
+  displayOnScreen = (value)=>{
+    this.setState({
+      input: this.state.input.concat(value)
+    })
+  }
+  calculateValue = ()=>{
+    let inputVal = this.state.input;
+    this.setState({
+      total: eval(inputVal),
+      isClicked: true,
+      input: ""
+    })
+  }
+  handleAllClear = ()=>{
+    this.setState({
+      total: "",
+      input: "",
+      isClicked: false
+    })
+  }
+  render = () => {
+    let {isClicked} = this.state;
+    return (
+      <div className="App">
+        <div className="screen">
+          {isClicked ? <span>{this.state.total}</span> : <span>{this.state.input}</span>}
+          
+        </div>
+        <div className="btn-container">
+           <Keypad 
+            displayOnScreen={this.displayOnScreen} 
+            calculateValue={this.calculateValue}
+            handleAllClear={this.handleAllClear}
+            />
+        </div>
+
+        
+      </div>
+    );
+  }
 }
 
 export default App;
